@@ -1,11 +1,74 @@
 import { Request, Response } from 'express'
 import { IUser } from '../types'
 import UserModel from '../models/user'
-import aes256 from 'aes256'
 import dotenv from 'dotenv'
+import { encryptText, decryptText } from '../utils/aes256'
+import { generateJsonwebtoken } from '../utils/jsonwebtoken'
 dotenv.config()
 
-interface IResult {
+
+
+// 유저를 회원가입 시키는 Controller
+
+interface IUserLoginController {
+    ok: boolean
+    error: string
+    token: string
+    user: IUser
+}
+
+export const UserLoginController = async (req: Request, res: Response) => {
+
+    const {
+        email,
+        password
+    } = req.body
+
+    let result: IUserLoginController = {
+        ok: true,
+        error: null,
+        token: null,
+        user: null
+    }
+
+    // email 에 해당하는 유저를 찾는다. 
+
+    const user = await UserModel.findOne({
+        email
+    })
+
+    // 해당 user 가 존재하지 않는다면 error 
+    if (user === null) {
+        result.ok = false
+        result.error = '존재하지 않는 이메일입니다.'
+        res.json(result)
+        return
+    }
+
+    // 유저가 존재한다면 암호화 된 비밀번호 비교
+    const decryptedPassword: string = decryptText(user.password)
+    if (password === decryptedPassword) {
+        // 토큰 생성후 토큰 반환
+        const token = generateJsonwebtoken(user.id)
+        result.token = token
+        result.user = user
+        res.json(result)
+        return
+    } else {
+        result.ok = false
+        result.error = '비밀번호가 일치하지 않습니다.'
+        res.json(result)
+        return
+    }
+
+
+}
+
+
+
+// 새로운 유저를 등록하는 Controller
+
+interface IMakeNewAccountResult {
     ok: boolean
     error: string
     user: IUser
@@ -18,7 +81,7 @@ export const makeNewAccount = async (req: Request, res: Response) => {
         name,
         phone
     }: IUser = req.body
-    let result: IResult = {
+    let result: IMakeNewAccountResult = {
         ok: true,
         error: null,
         user: null
@@ -40,8 +103,7 @@ export const makeNewAccount = async (req: Request, res: Response) => {
 
         } else {
             // 존재하지 않는다면 영양사로부터 입력받은 데이터값들을 대상으로 aes256 암호화를 해서 새로운 유저 등록
-            const key = process.env.AES256_KEY
-            const encryptedPassword = aes256.encrypt(key, password)
+            const encryptedPassword: string = encryptText(password)
             const user = new UserModel({
                 email,
                 password: encryptedPassword,
