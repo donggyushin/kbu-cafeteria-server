@@ -4,6 +4,49 @@ import MenuModel from '../models/menu'
 import dotenv from 'dotenv'
 dotenv.config()
 
+interface IPutNewMenuResponse {
+    ok: boolean
+    error: string
+    menu: IMenu
+}
+
+export const PutNewMenu = async (req: Request, res: Response) => {
+
+    // 추후에 관리자가 아닌 클라이언트가 요청을 보내면 무시하는 미들웨어를 추가해주어야함. 
+
+
+    const newMenu: IMenu = req.body.menu
+
+
+    let result: IPutNewMenuResponse = {
+        ok: true,
+        error: null,
+        menu: null
+    }
+
+    try {
+        const menu = await MenuModel.findById(newMenu._id)
+        menu.lunch.menus = newMenu.lunch.menus
+        menu.dinner.menus = newMenu.dinner.menus
+        await menu.save()
+        result.menu = menu
+        res.json(result)
+        return
+    } catch (err) {
+        console.error(`Error occured at [${__dirname}]: ${err}`)
+        result.ok = false
+        result.error = '메뉴를 변경하던 도중에 에러가 발생함. 관리자에게 문의 부탁'
+        res.json(result)
+        return
+    }
+
+
+
+}
+
+
+
+
 
 interface IGetMenusOnAMonthly {
     ok: boolean
@@ -27,7 +70,7 @@ export const GetMenusOnAMonthly = async (req: Request, res: Response): Promise<v
     let parsedYear: number = parseInt(year)
     let parsedMonth: number = parseInt(month)
     const menuObjects: IMenu[] = []
-    const days: number = new Date(parsedYear, parsedMonth, 0).getDate()
+    const days: number = 32 - new Date(parsedYear, parsedMonth, 32).getDate()
     // 해당 일수만큼 반복을 하여서 데이터베이스에서 menu instance 들을 불러온다. 만약에
     // 존재하지 않는 instance 라면 새로 만들어주고 불러온다. 
     try {
