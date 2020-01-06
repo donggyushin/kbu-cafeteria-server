@@ -1,5 +1,13 @@
 import mongoose from 'mongoose'
 
+export interface IFixMenu extends mongoose.Document {
+    menus: string[]
+}
+
+export interface IDailyMenu extends mongoose.Document {
+    menus: string[]
+}
+
 export interface ILunch extends mongoose.Document {
     menus: string[]
 }
@@ -14,6 +22,8 @@ export interface IMenu extends mongoose.Document {
     day: number
     lunch: ILunch
     dinner: IDinner
+    fix: IFixMenu
+    daily: IDailyMenu
 }
 
 export interface IUser extends mongoose.Document {

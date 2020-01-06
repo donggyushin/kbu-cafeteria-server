@@ -1,6 +1,14 @@
 import mongoose, { Schema } from 'mongoose'
 import { IMenu } from '../types'
 
+const dailyMenuSchema = new Schema({
+    menus: [String]
+})
+
+const fixMenuSchema = new Schema({
+    menus: [String]
+})
+
 const lunchSchema = new Schema({
     menus: [String]
 })
@@ -14,7 +22,9 @@ const menuSchema = new Schema({
     month: Number,
     day: Number,
     lunch: lunchSchema,
-    dinner: dinnerSchema
+    dinner: dinnerSchema,
+    daily: dailyMenuSchema,
+    fix: fixMenuSchema
 })
 
 const MenuModel = mongoose.model<IMenu>('menu', menuSchema)

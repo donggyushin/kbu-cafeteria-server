@@ -64,12 +64,22 @@ export const getMenusBasedOnSpecificDate = async (req: Request, res: Response) =
                         menus: []
                     }
 
+                    const fix = {
+                        menus: ['돈까스', '비빔밥']
+                    }
+
+                    const daily = {
+                        menus: []
+                    }
+
                     const newMenu: IMenu = await new MenuModel({
                         year,
                         month,
                         day,
                         dinner,
-                        lunch
+                        lunch,
+                        fix,
+                        daily
                     })
                     await newMenu.save()
                     menusList.push(newMenu)
@@ -125,6 +135,7 @@ export const PutNewMenu = async (req: Request, res: Response) => {
     const newMenu: IMenu = req.body.menu
 
 
+
     let result: IPutNewMenuResponse = {
         ok: true,
         error: null,
@@ -135,7 +146,11 @@ export const PutNewMenu = async (req: Request, res: Response) => {
         const menu = await MenuModel.findById(newMenu._id)
         menu.lunch.menus = newMenu.lunch.menus
         menu.dinner.menus = newMenu.dinner.menus
+        menu.fix.menus = newMenu.fix.menus
+        menu.daily.menus = newMenu.daily.menus
+
         await menu.save()
+
         result.menu = menu
         res.json(result)
         return
@@ -199,12 +214,23 @@ export const GetMenusOnAMonthly = async (req: Request, res: Response): Promise<v
                 const lunch = {
                     menus: []
                 }
+
+                const fix = {
+                    menus: ['돈까스', '비빔밥']
+                }
+
+                const daily = {
+                    menus: []
+                }
+
                 const newMenu = await new MenuModel({
                     year,
                     month,
                     day: index + 1,
                     dinner,
-                    lunch
+                    lunch,
+                    fix,
+                    daily
                 })
 
                 await newMenu.save()
@@ -221,8 +247,8 @@ export const GetMenusOnAMonthly = async (req: Request, res: Response): Promise<v
     } catch (err) {
         console.error(`Error occured at:[${__dirname}]: ${err.message}`)
         result.ok = false
-        result.error = `internal error`,
-            res.json(result)
+        result.error = `internal error`
+        res.json(result)
         return
     }
 
