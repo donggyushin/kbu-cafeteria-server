@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import './datebase'
+import './database'
 import App from './app'
 dotenv.config()
 

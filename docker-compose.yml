@@ -1,0 +1,29 @@
+version: '3'
+
+services: 
+
+    app:
+
+        container_name: kbu-cafeteria-node-mongo-server 
+
+        restart: always 
+
+        build: .
+
+        ports:
+
+            - '4001:4001'
+
+        links:
+
+            - mongo2
+
+    mongo2:
+
+        container_name: mongo2
+
+        image: mongo 
+
+        ports:
+
+            - '27017:27017'

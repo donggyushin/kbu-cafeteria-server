@@ -5,10 +5,11 @@ dotenv.config()
 let endpoint = process.env.DEV_MONGODB_URL
 
 //@ts-ignore
-let env = process.env.NODE_ENV
+const env = process.env.NODE_ENV
 if (env === 'docker') {
-    env = process.env.DOCKER_MONGODB_URL
+    endpoint = process.env.DOCKER_MONGODB_URL
 }
+
 
 mongoose.connect(endpoint, {
     useUnifiedTopology: true,
