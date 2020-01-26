@@ -1,5 +1,33 @@
 import mongoose from 'mongoose'
 
+
+// 기도
+
+export interface IstudentPray {
+    name: string
+    studentId: string
+    prays: string[]
+}
+
+export interface ITodayPray extends mongoose.Document {
+    year: number
+    month: number
+    day: number
+    studentPray: IstudentPray[]
+    ads: string[]
+    todayPrayContent: string[]
+    writer: IUser
+}
+
+
+
+
+
+
+
+// 학식
+
+
 export interface IFixMenu extends mongoose.Document {
     menus: string[]
 }
@@ -25,6 +53,8 @@ export interface IMenu extends mongoose.Document {
     fix: IFixMenu
     daily: IDailyMenu
 }
+
+// 유저
 
 export interface IUser extends mongoose.Document {
     email: string

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import { IUser } from '../types'
 
-const UserSchema = new mongoose.Schema({
+export const UserSchema = new mongoose.Schema({
     email: String,
     password: String,
     name: String,

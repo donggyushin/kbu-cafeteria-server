@@ -60,6 +60,7 @@ exports.checkUserAuth = function (req, res, next) { return __awaiter(void 0, voi
             case 2:
                 user = _a.sent();
                 if (user) {
+                    req.user = user;
                     next();
                     return [2 /*return*/];
                 }

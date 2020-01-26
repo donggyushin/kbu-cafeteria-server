@@ -3,7 +3,6 @@ import { decodeFooJsonwebtoken } from '../utils/jsonwebtoken'
 import { IUser } from '../types'
 import UserModel from '../models/user'
 
-
 declare module 'http' {
     interface IncomingHttpHeaders {
         "authentication"?: string
@@ -19,7 +18,11 @@ interface IResponseType {
     error: string
 }
 
-export const checkUserAuth = async (req: Request, res: Response, next: NextFunction) => {
+interface IUserRequest extends Request {
+    user: IUser
+}
+
+export const checkUserAuth = async (req: IUserRequest, res: Response, next: NextFunction) => {
     const { authentication }: ICheckUserAuthHeaderProps = req.headers
     let result: IResponseType = {
         ok: false,
@@ -30,6 +33,7 @@ export const checkUserAuth = async (req: Request, res: Response, next: NextFunct
         try {
             const user: IUser = await UserModel.findById(userId)
             if (user) {
+                req.user = user
                 next()
                 return
             } else {

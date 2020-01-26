@@ -4,11 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
-var user_1 = __importDefault(require("./user"));
-var menu_1 = __importDefault(require("./menu"));
-var todayPray_1 = __importDefault(require("./todayPray"));
+var authorization_1 = require("../middlewares/authorization");
+var todayPray_1 = require("../controllers/todayPray");
 var router = express_1.default.Router();
-router.use('/user', user_1.default);
-router.use('/menu', menu_1.default);
-router.use('/todaypray', todayPray_1.default);
+router.post('', authorization_1.checkUserAuth, todayPray_1.postTodayPray);
+router.get('/:date', todayPray_1.getTodayPray);
 exports.default = router;

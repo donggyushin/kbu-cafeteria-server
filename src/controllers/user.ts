@@ -33,6 +33,8 @@ export const UserLoginController = async (req: Request, res: Response) => {
 
     // email 에 해당하는 유저를 찾는다. 
 
+    console.log(email)
+
     const user = await UserModel.findOne({
         email
     })
