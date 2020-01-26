@@ -4,6 +4,95 @@ import MenuModel from '../models/menu'
 import dotenv from 'dotenv'
 dotenv.config()
 
+interface IgetSpecificOneMenuBasedOnDateParams {
+    date?: string
+}
+
+interface IgetSpecificOneMenuBasedOnDateResponse {
+    ok: boolean
+    error: string
+    menu: IMenu
+}
+
+export const getSpecificOneMenuBasedOnDate = async (req: Request, res: Response) => {
+    const { date }: IgetSpecificOneMenuBasedOnDateParams = req.params
+    let result: IgetSpecificOneMenuBasedOnDateResponse = {
+        ok: false,
+        error: null,
+        menu: null
+    }
+
+    const parsedDate = new Date(parseInt(date))
+    const year = parsedDate.getFullYear()
+    const month = parsedDate.getMonth()
+    const day = parsedDate.getDate()
+
+    try {
+        const menu = await MenuModel.findOne({
+            year,
+            month,
+            day
+        })
+
+        if (menu) {
+            result.ok = true
+            result.menu = menu
+            res.json(result)
+            return
+
+        } else {
+
+            const dinner = {
+                menus: []
+            }
+            const lunch = {
+                menus: []
+            }
+
+            const fix = {
+                menus: ['돈까스', '비빔밥']
+            }
+
+            const daily = {
+                menus: []
+            }
+
+            try {
+                const newMenu = await new MenuModel({
+                    year,
+                    month,
+                    day,
+                    dinner,
+                    lunch,
+                    fix,
+                    daily
+                })
+
+                result.ok = true
+                result.menu = newMenu
+                res.json(result)
+                return
+
+            } catch (err) {
+                result.ok = false
+                result.error = 'internal server error. 관리자에게 문의'
+                res.json(result)
+                return
+            }
+
+        }
+
+
+    } catch (err) {
+        result.error = '서버내 에러발생. 관리자에게 문의 바람. '
+        res.json(result)
+        return
+    }
+
+
+
+}
+
 interface IGetMenusBasedOnSpecificDateParams {
     date1?: string
     date2?: string

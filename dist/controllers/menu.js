@@ -42,8 +42,85 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var menu_1 = __importDefault(require("../models/menu"));
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
+exports.getSpecificOneMenuBasedOnDate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var date, result, parsedDate, year, month, day, menu, dinner, lunch, fix, daily, newMenu, err_1, err_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                date = req.params.date;
+                result = {
+                    ok: false,
+                    error: null,
+                    menu: null
+                };
+                parsedDate = new Date(parseInt(date));
+                year = parsedDate.getFullYear();
+                month = parsedDate.getMonth();
+                day = parsedDate.getDate();
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 8, , 9]);
+                return [4 /*yield*/, menu_1.default.findOne({
+                        year: year,
+                        month: month,
+                        day: day
+                    })];
+            case 2:
+                menu = _a.sent();
+                if (!menu) return [3 /*break*/, 3];
+                result.ok = true;
+                result.menu = menu;
+                res.json(result);
+                return [2 /*return*/];
+            case 3:
+                dinner = {
+                    menus: []
+                };
+                lunch = {
+                    menus: []
+                };
+                fix = {
+                    menus: ['돈까스', '비빔밥']
+                };
+                daily = {
+                    menus: []
+                };
+                _a.label = 4;
+            case 4:
+                _a.trys.push([4, 6, , 7]);
+                return [4 /*yield*/, new menu_1.default({
+                        year: year,
+                        month: month,
+                        day: day,
+                        dinner: dinner,
+                        lunch: lunch,
+                        fix: fix,
+                        daily: daily
+                    })];
+            case 5:
+                newMenu = _a.sent();
+                result.ok = true;
+                result.menu = newMenu;
+                res.json(result);
+                return [2 /*return*/];
+            case 6:
+                err_1 = _a.sent();
+                result.ok = false;
+                result.error = 'internal server error. 관리자에게 문의';
+                res.json(result);
+                return [2 /*return*/];
+            case 7: return [3 /*break*/, 9];
+            case 8:
+                err_2 = _a.sent();
+                result.error = '서버내 에러발생. 관리자에게 문의 바람. ';
+                res.json(result);
+                return [2 /*return*/];
+            case 9: return [2 /*return*/];
+        }
+    });
+}); };
 exports.getMenusBasedOnSpecificDate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, date2, date1, result, menusList, diff, parsedDate1, days, startYear, startMonth, startDay, numberOfDaysOfTheStartMonth, year, month, day, i, menu, dinner, lunch, fix, daily, newMenu, err_1;
+    var _a, date2, date1, result, menusList, diff, parsedDate1, days, startYear, startMonth, startDay, numberOfDaysOfTheStartMonth, year, month, day, i, menu, dinner, lunch, fix, daily, newMenu, err_3;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -135,8 +212,8 @@ exports.getMenusBasedOnSpecificDate = function (req, res) { return __awaiter(voi
                 res.json(result);
                 return [2 /*return*/];
             case 10:
-                err_1 = _b.sent();
-                console.error("Error occured at [" + __dirname + "]:" + err_1.message);
+                err_3 = _b.sent();
+                console.error("Error occured at [" + __dirname + "]:" + err_3.message);
                 result.ok = false;
                 result.error = "알수없는 이유로 인해서 메뉴들을 불러오지 못하였습니다. 관리자에게 문의해주세요. 01090411019";
                 res.json(result);
@@ -151,7 +228,7 @@ exports.getMenusBasedOnSpecificDate = function (req, res) { return __awaiter(voi
     });
 }); };
 exports.PutNewMenu = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var newMenu, result, menu, err_2;
+    var newMenu, result, menu, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -178,8 +255,8 @@ exports.PutNewMenu = function (req, res) { return __awaiter(void 0, void 0, void
                 res.json(result);
                 return [2 /*return*/];
             case 4:
-                err_2 = _a.sent();
-                console.error("Error occured at [" + __dirname + "]: " + err_2);
+                err_4 = _a.sent();
+                console.error("Error occured at [" + __dirname + "]: " + err_4);
                 result.ok = false;
                 result.error = '메뉴를 변경하던 도중에 에러가 발생함. 관리자에게 문의 부탁';
                 res.json(result);
@@ -189,7 +266,7 @@ exports.PutNewMenu = function (req, res) { return __awaiter(void 0, void 0, void
     });
 }); };
 exports.GetMenusOnAMonthly = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var result, _a, year, month, parsedYear, parsedMonth, menuObjects, days, index, menu, dinner, lunch, fix, daily, newMenu, err_3;
+    var result, _a, year, month, parsedYear, parsedMonth, menuObjects, days, index, menu, dinner, lunch, fix, daily, newMenu, err_5;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -259,8 +336,8 @@ exports.GetMenusOnAMonthly = function (req, res) { return __awaiter(void 0, void
                 res.json(result);
                 return [2 /*return*/];
             case 9:
-                err_3 = _b.sent();
-                console.error("Error occured at:[" + __dirname + "]: " + err_3.message);
+                err_5 = _b.sent();
+                console.error("Error occured at:[" + __dirname + "]: " + err_5.message);
                 result.ok = false;
                 result.error = "internal error";
                 res.json(result);
