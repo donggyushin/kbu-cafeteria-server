@@ -98,7 +98,7 @@ export const postTodayPray = async (req: IUserRequest, res: Response) => {
         error: null,
         todayPray: null
     }
-    if (studentPray && ads && todayPrayContent) {
+    if (studentPray && todayPrayContent) {
 
 
         const writer = req.user
