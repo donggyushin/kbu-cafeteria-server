@@ -1,6 +1,6 @@
 import express from 'express'
 import { GetMenusOnAMonthly, PutNewMenu, getMenusBasedOnSpecificDate, getSpecificOneMenuBasedOnDate } from '../controllers/menu'
-import { checkUserAuth } from '../middlewares/authorization'
+import { checkUserAuth, checkCooker } from '../middlewares/authorization'
 const router = express.Router()
 // date 값은 해당 날짜를 miliseconds 단위로 반환한 값이다. 
 
@@ -14,6 +14,6 @@ router.get('/menus/:date1/:date2', getMenusBasedOnSpecificDate)
 router.get('/:year/:month', GetMenusOnAMonthly)
 
 
-router.put('', checkUserAuth, PutNewMenu)
+router.put('', checkUserAuth, checkCooker, PutNewMenu)
 
 export default router

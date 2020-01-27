@@ -22,6 +22,42 @@ interface IUserRequest extends Request {
     user: IUser
 }
 
+export const checkPrayer = async (req: IUserRequest, res: Response, next: NextFunction) => {
+    let result: IResponseType = {
+        ok: false,
+        error: null
+    }
+    let check: boolean = false
+    req.user.authorities.map(authority => {
+        if (authority === "PRAY") check = true
+    })
+    if (check) {
+        next()
+    } else {
+        result.error = "오늘의 기도 접근 권한이 없습니다. 권한을 강화시키고 싶으시다면 관리자에게 문의해주세요. "
+        res.json(result)
+        return;
+    }
+}
+
+export const checkCooker = async (req: IUserRequest, res: Response, next: NextFunction) => {
+    let result: IResponseType = {
+        ok: false,
+        error: null
+    }
+    let check: boolean = false
+    req.user.authorities.map(authority => {
+        if (authority === "COOK") check = true
+    })
+    if (check) {
+        next()
+    } else {
+        result.error = "학식 데이터 접근 권한이 없습니다. 권한을 강화시키고 싶으시다면 관리자에게 문의해주세요. "
+        res.json(result)
+        return;
+    }
+}
+
 export const checkUserAuth = async (req: IUserRequest, res: Response, next: NextFunction) => {
     const { authentication }: ICheckUserAuthHeaderProps = req.headers
     let result: IResponseType = {

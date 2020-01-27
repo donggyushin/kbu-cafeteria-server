@@ -61,4 +61,12 @@ export interface IUser extends mongoose.Document {
     password: string
     name: string
     phone: string
+    authorities: [IAdim]
 }
+
+
+
+
+
+// 어드민 타입
+export type IAdim = "" | "COOK" | "PRAY"
