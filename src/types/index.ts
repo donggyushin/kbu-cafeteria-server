@@ -61,7 +61,7 @@ export interface IUser extends mongoose.Document {
     password: string
     name: string
     phone: string
-    authorities: [IAdim]
+    authorities: IAdim[]
 }
 
 
