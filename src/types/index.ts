@@ -61,7 +61,7 @@ export interface IUser extends mongoose.Document {
     password: string
     name: string
     phone: string
-    authorities: IAdim[]
+    authorities: IAdmin[]
 }
 
 
@@ -69,4 +69,4 @@ export interface IUser extends mongoose.Document {
 
 
 // 어드민 타입
-export type IAdim = "" | "COOK" | "PRAY"
+export type IAdmin = "" | "COOK" | "PRAY"
