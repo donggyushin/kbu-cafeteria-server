@@ -29,9 +29,7 @@ export const getTodayPray = async (req: Request, res: Response) => {
 
         try {
             const fields = {
-                writer: 0,
-                _id: 0,
-                'studentPray._id': 0
+                writer: 0
             }
 
             const todayPray = await PrayModel.findOne({

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { IMenu, IDinner, ILunch } from '../types'
+import { IMenu } from '../types'
 import MenuModel from '../models/menu'
 import dotenv from 'dotenv'
 dotenv.config()
@@ -28,6 +28,7 @@ export const getSpecificOneMenuBasedOnDate = async (req: Request, res: Response)
     const day = parsedDate.getDate()
 
     try {
+
         const menu = await MenuModel.findOne({
             year,
             month,
@@ -84,6 +85,7 @@ export const getSpecificOneMenuBasedOnDate = async (req: Request, res: Response)
 
 
     } catch (err) {
+        console.error(err)
         result.error = '서버내 에러발생. 관리자에게 문의 바람. '
         res.json(result)
         return
