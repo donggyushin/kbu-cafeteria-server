@@ -28,17 +28,22 @@ export const getTodayPray = async (req: Request, res: Response) => {
         const day = dateObject.getDate()
 
         try {
+            const fields = {
+                writer: 0,
+                _id: 0,
+                'studentPray._id': 0
+            }
+
             const todayPray = await PrayModel.findOne({
                 year,
                 month,
                 day
             })
+                .select(fields)
 
 
 
             if (todayPray) {
-
-                todayPray.writer.password = ""
 
                 result.ok = true
                 result.todayPray = todayPray
@@ -47,12 +52,14 @@ export const getTodayPray = async (req: Request, res: Response) => {
                 return;
 
             } else {
-                result.error = "요청하신 날짜의 오늘의 기도문은 아직 업로드 되지 않았습니다. "
+                result.ok = false
+                result.error = '해당 날짜의 오늘의 기도문이 존재하지 않습니다.'
                 res.json(result)
-                return;
+                return
             }
 
         } catch (err) {
+            console.error(err)
             result.error = "오늘의 기도 데이터를 불러오던 도중에 에러가 발생하였습니다. "
             res.json(result)
             return;
