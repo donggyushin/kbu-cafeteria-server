@@ -5,8 +5,8 @@ import { UserSchema } from './user'
 
 const studentPraySchema = new Schema({
     name: String,
-    studentId: String,
-    prays: [String]
+    grade: Number,
+    prays: [String],
 })
 
 const todayPraySchema = new Schema({

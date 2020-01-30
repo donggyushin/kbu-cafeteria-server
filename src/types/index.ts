@@ -5,7 +5,7 @@ import mongoose from 'mongoose'
 
 export interface IstudentPray {
     name: string
-    studentId: string
+    grade: number
     prays: string[]
 }
 

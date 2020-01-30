@@ -75,7 +75,7 @@ export const getTodayPray = async (req: Request, res: Response) => {
 
 interface IstudentPray {
     name: string
-    studentId: string
+    grade: number
     prays: string[]
 }
 
