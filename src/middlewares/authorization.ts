@@ -28,7 +28,9 @@ export const checkPrayer = async (req: IUserRequest, res: Response, next: NextFu
         error: null
     }
     let check: boolean = false
+
     req.user.authorities.map(authority => {
+
         if (authority === "PRAY") check = true
     })
     if (check) {

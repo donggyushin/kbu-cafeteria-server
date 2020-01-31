@@ -73,6 +73,7 @@ export const getTodayPray = async (req: Request, res: Response) => {
 
 
 
+
 interface IstudentPray {
     name: string
     grade: number
@@ -80,9 +81,9 @@ interface IstudentPray {
 }
 
 interface IpostTodayPrayBody {
-    studentPray?: IstudentPray[]
-    ads?: string[]
-    todayPrayContent?: string[]
+    studentPray: IstudentPray[]
+    ads: string[]
+    todayPrayContent: string[]
 }
 
 interface IpostTodayPrayResponse {
@@ -128,6 +129,8 @@ export const postTodayPray = async (req: IUserRequest, res: Response) => {
                 try {
                     await existingPray.save()
 
+                    existingPray.writer = null;
+
                     result.ok = true
                     result.todayPray = existingPray
                     res.json(result)
@@ -152,10 +155,9 @@ export const postTodayPray = async (req: IUserRequest, res: Response) => {
                         todayPrayContent
                     })
 
-                    todayPray.writer
-
                     await todayPray.save()
                     result.ok = true
+                    todayPray.writer = null;
                     result.todayPray = todayPray
                     res.json(result)
                     return;
@@ -190,5 +192,94 @@ export const postTodayPray = async (req: IUserRequest, res: Response) => {
         console.log('todayPrayContent: ', todayPrayContent)
         res.json(result)
         return
+    }
+}
+
+
+
+interface IPostTodayPraySpecificDateParams {
+    date?: string
+}
+
+interface IpostTodayPraySpecificDateResult {
+    ok: boolean
+    error: string
+    todayPray: ITodayPray
+}
+
+export const postTodayPraySpecificDate = async (req: IUserRequest, res: Response) => {
+    const { date } = req.params as IPostTodayPraySpecificDateParams
+    const { studentPray, ads, todayPrayContent } = req.body as IpostTodayPrayBody
+    let result: IpostTodayPraySpecificDateResult = {
+        ok: false,
+        error: null,
+        todayPray: null
+    }
+    if (date) {
+        const dateObj = new Date(parseInt(date))
+        const writer = req.user
+        const year = dateObj.getFullYear()
+        const month = dateObj.getMonth()
+        const day = dateObj.getDate()
+
+        try {
+            const existingPray = await PrayModel.findOne({
+                year,
+                month,
+                day
+            })
+
+            if (existingPray) {
+
+                existingPray.writer = writer
+                existingPray.studentPray = studentPray
+                existingPray.ads = ads
+                existingPray.todayPrayContent = todayPrayContent
+                try {
+                    await existingPray.save()
+                    existingPray.writer = null
+                    result.ok = true
+                    result.todayPray = existingPray
+                    res.json(result)
+                    return;
+
+                } catch (err) {
+                    console.error(err)
+                    result.error = '새로운 데이터 저장도중 에러발생'
+                    res.json(result)
+                    return
+                }
+
+            } else {
+                const newPray = await new PrayModel({
+                    year,
+                    month,
+                    day,
+                    writer,
+                    studentPray,
+                    ads,
+                    todayPrayContent
+                })
+
+                await newPray.save()
+                newPray.writer = null
+                result.ok = true
+                result.todayPray = newPray
+                res.json(result)
+                return
+            }
+
+        } catch (err) {
+            console.error(`${__dirname} ${__filename} err`)
+            result.error = "기존에 존재하던 데이터 검색 도충 에러 발생"
+            res.json(result)
+            return
+        }
+
+
+    } else {
+        result.error = "date인자를 전달받지 못하였습니다."
+        res.json(result)
+        return;
     }
 }
