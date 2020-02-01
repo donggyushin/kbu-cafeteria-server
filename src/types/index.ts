@@ -17,6 +17,7 @@ export interface ITodayPray extends mongoose.Document {
     ads: string[]
     todayPrayContent: string[]
     writer: IUser
+    date: Date
 }
 
 

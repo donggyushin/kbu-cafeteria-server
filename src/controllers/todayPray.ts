@@ -4,6 +4,110 @@ import { ITodayPray, IUser } from '../types/index'
 import dotenv from 'dotenv'
 dotenv.config()
 
+interface IGetTodayPrayByIdParams {
+    id?: string
+}
+
+interface IGetTodayPrayByIdResult {
+    ok: boolean
+    error: string
+    pray: ITodayPray
+}
+
+export const getTodayPrayById = async (req: Request, res: Response) => {
+    const { id } = req.params as IGetTodayPrayByIdParams
+    let result: IGetTodayPrayByIdResult = {
+        ok: false,
+        error: null,
+        pray: null
+    }
+    if (id) {
+        try {
+            const pray = await PrayModel.findById(id).select({
+                'writer.authorities': 0,
+                'writer.password': 0,
+                'writer.phone': 0,
+                'writer.email': 0
+            })
+
+            result.ok = true
+            result.pray = pray
+            res.json(result)
+            return;
+
+        } catch (err) {
+            console.error(err)
+            result.error = "서버 내부에서 알수 없는 에러 발생"
+            res.json(result)
+            return;
+        }
+    } else {
+        result.error = "id인자를 전달받지 못하였습니다."
+        res.json(result)
+        return
+    }
+}
+
+interface IGetTodayPraysParams {
+    page?: string
+}
+
+interface IGetTodayPraysResult {
+    ok: boolean
+    error: string
+    prays: ITodayPray[]
+    praysCount: number
+}
+
+export const getTodayPrays = async (req: Request, res: Response) => {
+    const { page } = req.params as IGetTodayPraysParams
+
+    const result: IGetTodayPraysResult = {
+        ok: false,
+        error: null,
+        prays: [],
+        praysCount: 0
+    }
+
+    if (page) {
+
+        const skip = (parseInt(page) - 1) * 100
+        try {
+            const prays = await PrayModel.find({}, {
+                'writer.authorities': 0,
+                'writer.password': 0,
+                'writer.email': 0,
+                'writer.phone': 0,
+                'year': 0,
+                'month': 0,
+                'day': 0,
+            }, {
+                skip,
+                limit: 100
+            })
+                .sort({ date: -1 })
+
+            const praysCount = await PrayModel.find().countDocuments()
+
+            result.ok = true
+            result.prays = prays
+            result.praysCount = praysCount
+            res.json(result)
+            return
+
+        } catch (err) {
+            result.error = '서버에러 발생'
+            res.json(result)
+            return;
+        }
+
+    } else {
+        result.error = 'page가 주어지지 않았습니다.'
+        res.json(result)
+        return
+    }
+}
+
 interface IgetTodayPrayParams {
     date?: string
 }
@@ -29,7 +133,13 @@ export const getTodayPray = async (req: Request, res: Response) => {
 
         try {
             const fields = {
-                writer: 0
+                'writer.authorities': 0,
+                'writer.password': 0,
+                'writer.email': 0,
+                'writer.phone': 0,
+                'year': 0,
+                'month': 0,
+                'day': 0,
             }
 
             const todayPray = await PrayModel.findOne({
@@ -126,6 +236,7 @@ export const postTodayPray = async (req: IUserRequest, res: Response) => {
                 existingPray.ads = ads
                 existingPray.studentPray = studentPray
                 existingPray.todayPrayContent = todayPrayContent
+                existingPray.date = date
                 try {
                     await existingPray.save()
 
@@ -154,6 +265,8 @@ export const postTodayPray = async (req: IUserRequest, res: Response) => {
                         ads,
                         todayPrayContent
                     })
+
+                    todayPray.date = date
 
                     await todayPray.save()
                     result.ok = true
@@ -222,6 +335,7 @@ export const postTodayPraySpecificDate = async (req: IUserRequest, res: Response
         const month = dateObj.getMonth()
         const day = dateObj.getDate()
 
+
         try {
             const existingPray = await PrayModel.findOne({
                 year,
@@ -235,6 +349,7 @@ export const postTodayPraySpecificDate = async (req: IUserRequest, res: Response
                 existingPray.studentPray = studentPray
                 existingPray.ads = ads
                 existingPray.todayPrayContent = todayPrayContent
+                existingPray.date = dateObj
                 try {
                     await existingPray.save()
                     existingPray.writer = null
@@ -260,6 +375,8 @@ export const postTodayPraySpecificDate = async (req: IUserRequest, res: Response
                     ads,
                     todayPrayContent
                 })
+
+                newPray.date = dateObj
 
                 await newPray.save()
                 newPray.writer = null

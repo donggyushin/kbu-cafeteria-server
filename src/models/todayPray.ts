@@ -16,7 +16,11 @@ const todayPraySchema = new Schema({
     studentPray: [studentPraySchema],
     ads: [String],
     todayPrayContent: [String],
-    writer: UserSchema
+    writer: UserSchema,
+    date: {
+        type: Date,
+        default: Date.now
+    }
 })
 
 const PrayModel = mongoose.model<ITodayPray>('todayPray', todayPraySchema)
