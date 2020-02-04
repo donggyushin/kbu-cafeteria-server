@@ -8,6 +8,9 @@ RUN npm install
 
 COPY . . 
 
+RUN npm run build
+
 EXPOSE 4001 
+
 
 CMD ["yarn", "docker"]
