@@ -11,6 +11,7 @@
     "@types/jsonwebtoken": "^8.3.5",
     "@types/mongoose": "^5.5.35",
     "aes256": "^1.0.4",
+    "bluebird": "^3.7.2",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -25,6 +26,7 @@
     "start": "NODE_ENV=production node dist/index.js > stdout.txt 2> stderr.text &",
     "dev": "NODE_ENV=development nodemon src/index.ts",
     "build": "tsc -p .",
-    "docker": "NODE_ENV=docker node dist/index.js"
+    "docker": "NODE_ENV=docker node dist/index.js",
+    "test": "nodemon src/test.ts"
   }
 }
