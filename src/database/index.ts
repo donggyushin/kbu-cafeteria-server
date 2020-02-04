@@ -12,7 +12,6 @@ if (env === 'docker') {
     endpoint = process.env.PROD_MONGODB_URL
 }
 
-endpoint = process.env.PROD_MONGODB_URL
 
 
 mongoose.connect(endpoint, {
