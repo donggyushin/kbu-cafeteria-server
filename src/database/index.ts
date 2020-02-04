@@ -4,10 +4,12 @@ dotenv.config()
 
 let endpoint = process.env.DEV_MONGODB_URL
 
-//@ts-ignore
-const env = process.env.NODE_ENV
+
+let env = process.env.NODE_ENV
 if (env === 'docker') {
     endpoint = process.env.DOCKER_MONGODB_URL
+} else if (env = 'production') {
+    endpoint = process.env.PROD_MONGODB_URL
 }
 
 

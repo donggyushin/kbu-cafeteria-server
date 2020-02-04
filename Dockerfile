@@ -13,4 +13,4 @@ RUN npm run build
 EXPOSE 4001 
 
 
-CMD ["yarn", "docker"]
+CMD ["yarn", "start"]
