@@ -1,2 +1,0 @@
-KBU Cafeteria Web server is listening on port 4001
-Database connected successfully
