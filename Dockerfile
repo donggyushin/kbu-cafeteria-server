@@ -10,7 +10,9 @@ COPY . .
 
 RUN npm run build
 
+COPY src/keys /usr/src/app/dist/keys
+
 EXPOSE 4001 
 
 
-CMD ["yarn", "dev"]
+CMD ["yarn", "docker"]

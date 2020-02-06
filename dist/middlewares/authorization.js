@@ -41,6 +41,52 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var jsonwebtoken_1 = require("../utils/jsonwebtoken");
 var user_1 = __importDefault(require("../models/user"));
+exports.checkPrayer = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var result, check;
+    return __generator(this, function (_a) {
+        result = {
+            ok: false,
+            error: null
+        };
+        check = false;
+        req.user.authorities.map(function (authority) {
+            if (authority === "PRAY")
+                check = true;
+        });
+        if (check) {
+            next();
+        }
+        else {
+            result.error = "오늘의 기도 접근 권한이 없습니다. 권한을 강화시키고 싶으시다면 관리자에게 문의해주세요. ";
+            res.json(result);
+            return [2 /*return*/];
+        }
+        return [2 /*return*/];
+    });
+}); };
+exports.checkCooker = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var result, check;
+    return __generator(this, function (_a) {
+        result = {
+            ok: false,
+            error: null
+        };
+        check = false;
+        req.user.authorities.map(function (authority) {
+            if (authority === "COOK")
+                check = true;
+        });
+        if (check) {
+            next();
+        }
+        else {
+            result.error = "학식 데이터 접근 권한이 없습니다. 권한을 강화시키고 싶으시다면 관리자에게 문의해주세요. ";
+            res.json(result);
+            return [2 /*return*/];
+        }
+        return [2 /*return*/];
+    });
+}); };
 exports.checkUserAuth = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var authentication, result, userId, user, err_1;
     return __generator(this, function (_a) {

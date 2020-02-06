@@ -8,7 +8,8 @@ exports.UserSchema = new mongoose_1.default.Schema({
     email: String,
     password: String,
     name: String,
-    phone: String
+    phone: String,
+    authorities: [String]
 });
 var UserModel = mongoose_1.default.model('user', exports.UserSchema);
 exports.default = UserModel;

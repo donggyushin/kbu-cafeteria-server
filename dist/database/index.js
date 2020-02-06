@@ -7,10 +7,12 @@ var mongoose_1 = __importDefault(require("mongoose"));
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 var endpoint = process.env.DEV_MONGODB_URL;
-//@ts-ignore
 var env = process.env.NODE_ENV;
 if (env === 'docker') {
-    endpoint = process.env.DOCKER_MONGODB_URL;
+    endpoint = process.env.PROD_MONGODB_URL;
+}
+else if (env = 'production') {
+    endpoint = process.env.PROD_MONGODB_URL;
 }
 mongoose_1.default.connect(endpoint, {
     useUnifiedTopology: true,

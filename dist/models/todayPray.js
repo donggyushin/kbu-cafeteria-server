@@ -11,8 +11,8 @@ var mongoose_1 = __importStar(require("mongoose"));
 var user_1 = require("./user");
 var studentPraySchema = new mongoose_1.Schema({
     name: String,
-    studentId: String,
-    prays: [String]
+    grade: Number,
+    prays: [String],
 });
 var todayPraySchema = new mongoose_1.Schema({
     year: Number,
@@ -21,7 +21,11 @@ var todayPraySchema = new mongoose_1.Schema({
     studentPray: [studentPraySchema],
     ads: [String],
     todayPrayContent: [String],
-    writer: user_1.UserSchema
+    writer: user_1.UserSchema,
+    date: {
+        type: Date,
+        default: Date.now
+    }
 });
 var PrayModel = mongoose_1.default.model('todayPray', todayPraySchema);
 exports.default = PrayModel;

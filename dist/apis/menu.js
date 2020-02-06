@@ -14,5 +14,5 @@ router.get('/menu/:date', menu_1.getSpecificOneMenuBasedOnDate);
 router.get('/menus/:date1/:date2', menu_1.getMenusBasedOnSpecificDate);
 // 해당 연과 달에 해당하는 모든 menu 오브젝트들을 반환해주는 api
 router.get('/:year/:month', menu_1.GetMenusOnAMonthly);
-router.put('', authorization_1.checkUserAuth, menu_1.PutNewMenu);
+router.put('', authorization_1.checkUserAuth, authorization_1.checkCooker, menu_1.PutNewMenu);
 exports.default = router;

@@ -112,6 +112,7 @@ exports.getSpecificOneMenuBasedOnDate = function (req, res) { return __awaiter(v
             case 7: return [3 /*break*/, 9];
             case 8:
                 err_2 = _a.sent();
+                console.error(err_2);
                 result.error = '서버내 에러발생. 관리자에게 문의 바람. ';
                 res.json(result);
                 return [2 /*return*/];

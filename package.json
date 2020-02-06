@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "NODE_ENV=production node dist/index.js > stdout.txt 2> stderr.text &",
-    "dev": "NODE_ENV=development nodemon src/index.ts",
+    "dev": "nodemon src/index.ts",
     "build": "tsc -p .",
     "docker": "NODE_ENV=docker node dist/index.js",
     "test": "nodemon src/test.ts"

@@ -56,8 +56,6 @@ exports.UserLoginController = function (req, res) { return __awaiter(void 0, voi
                     token: null,
                     user: null
                 };
-                // email 에 해당하는 유저를 찾는다. 
-                console.log(email);
                 return [4 /*yield*/, user_1.default.findOne({
                         email: email
                     })
