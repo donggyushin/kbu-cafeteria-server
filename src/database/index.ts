@@ -6,10 +6,14 @@ let endpoint = process.env.DEV_MONGODB_URL
 
 
 let env = process.env.NODE_ENV
+console.log('env:', env)
+
 if (env === 'docker') {
     endpoint = process.env.PROD_MONGODB_URL
-} else if (env = 'production') {
+    console.log('1')
+} else if (env == 'production') {
     endpoint = process.env.PROD_MONGODB_URL
+    console.log('2')
 }
 
 
