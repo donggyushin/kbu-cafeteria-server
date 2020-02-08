@@ -14,7 +14,6 @@ interface IUserLoginController {
     ok: boolean
     error: string
     token: string
-    user: IUser
 }
 
 export const UserLoginController = async (req: Request, res: Response) => {
@@ -27,40 +26,46 @@ export const UserLoginController = async (req: Request, res: Response) => {
     let result: IUserLoginController = {
         ok: true,
         error: null,
-        token: null,
-        user: null
+        token: null
     }
 
     // email 에 해당하는 유저를 찾는다. 
 
+    try {
 
-    const user = await UserModel.findOne({
-        email
-    })
+        const user = await UserModel.findOne({
+            email
+        })
 
-    // 해당 user 가 존재하지 않는다면 error 
-    if (user === null) {
-        result.ok = false
-        result.error = '존재하지 않는 이메일입니다.'
-        res.json(result)
-        return
+        // 해당 user 가 존재하지 않는다면 error 
+        if (user === null) {
+            result.ok = false
+            result.error = '존재하지 않는 이메일입니다.'
+            res.json(result)
+            return
+        }
+
+        // 유저가 존재한다면 암호화 된 비밀번호 비교
+        const decryptedPassword: string = decryptText(user.password)
+        if (password === decryptedPassword) {
+            // 토큰 생성후 토큰 반환
+            const token = generateJsonwebtoken(user.id)
+            result.token = token
+            res.json(result)
+            return
+        } else {
+            result.ok = false
+            result.error = '비밀번호가 일치하지 않습니다.'
+            res.json(result)
+            return
+        }
+
+    } catch (err) {
+        console.error(err)
+        result.error = "내부에러 발생"
+        return res.json(result)
     }
 
-    // 유저가 존재한다면 암호화 된 비밀번호 비교
-    const decryptedPassword: string = decryptText(user.password)
-    if (password === decryptedPassword) {
-        // 토큰 생성후 토큰 반환
-        const token = generateJsonwebtoken(user.id)
-        result.token = token
-        result.user = user
-        res.json(result)
-        return
-    } else {
-        result.ok = false
-        result.error = '비밀번호가 일치하지 않습니다.'
-        res.json(result)
-        return
-    }
 
 
 }
@@ -77,20 +82,18 @@ export const giveAuthorities = async (req: Request, res: Response) => {
     interface Iresult {
         ok: boolean
         error: string
-        user: IUser
     }
     const { email, password, authorities } = req.body as reqBody
     let result: Iresult = {
         ok: false,
-        error: null,
-        user: null
+        error: null
     }
     if (email && password) {
         try {
             const user = await UserModel.findOne({
                 email
             }).select({
-                password: 0
+                "password": 0
             })
 
             if (user) {
@@ -98,10 +101,11 @@ export const giveAuthorities = async (req: Request, res: Response) => {
                 if (userPassword === password) {
                     user.authorities = authorities
                     await user.save()
-                    result.ok = true,
-                        result.user = user
+                    result.ok = true
+                    return res.json(result)
                 } else {
                     result.error = "패스워드가 틀렸습니다."
+                    return res.json(result)
                 }
             } else {
                 result.error = "해당하는 유저는 존재하지 않습니다."
@@ -109,6 +113,7 @@ export const giveAuthorities = async (req: Request, res: Response) => {
             }
 
         } catch (err) {
+            console.log(err.message)
             result.error = "서버 내부 에러 발생"
             res.json(result)
             return;
