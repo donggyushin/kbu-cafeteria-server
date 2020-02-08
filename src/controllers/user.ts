@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { IUser } from '../types'
+import { IUser, IAdmin } from '../types'
 import UserModel from '../models/user'
 import dotenv from 'dotenv'
 import { encryptText, decryptText } from '../utils/aes256'
@@ -65,6 +65,60 @@ export const UserLoginController = async (req: Request, res: Response) => {
 
 }
 
+
+
+export const giveAuthorities = async (req: Request, res: Response) => {
+    interface reqBody {
+        email: string
+        password: string,
+        authorities: IAdmin[]
+    }
+
+    interface Iresult {
+        ok: boolean
+        error: string
+        user: IUser
+    }
+    const { email, password, authorities } = req.body as reqBody
+    let result: Iresult = {
+        ok: false,
+        error: null,
+        user: null
+    }
+    if (email && password) {
+        try {
+            const user = await UserModel.findOne({
+                email
+            }).select({
+                password: 0
+            })
+
+            if (user) {
+                const userPassword = decryptText(user.password)
+                if (userPassword === password) {
+                    user.authorities = authorities
+                    await user.save()
+                    result.ok = true,
+                        result.user = user
+                } else {
+                    result.error = "패스워드가 틀렸습니다."
+                }
+            } else {
+                result.error = "해당하는 유저는 존재하지 않습니다."
+                return res.json(result)
+            }
+
+        } catch (err) {
+            result.error = "서버 내부 에러 발생"
+            res.json(result)
+            return;
+        }
+    } else {
+        result.error = "인자를 제대로 전달받지 못하였습니다."
+        res.json(result)
+        return;
+    }
+}
 
 
 // 새로운 유저를 등록하는 Controller
