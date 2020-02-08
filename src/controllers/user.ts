@@ -92,8 +92,6 @@ export const giveAuthorities = async (req: Request, res: Response) => {
         try {
             const user = await UserModel.findOne({
                 email
-            }).select({
-                "password": 0
             })
 
             if (user) {
