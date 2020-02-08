@@ -8,12 +8,12 @@ dotenv.config()
 
 
 
-// 유저를 회원가입 시키는 Controller
 
 interface IUserLoginController {
     ok: boolean
     error: string
     token: string
+    user: IUser
 }
 
 export const UserLoginController = async (req: Request, res: Response) => {
@@ -26,7 +26,8 @@ export const UserLoginController = async (req: Request, res: Response) => {
     let result: IUserLoginController = {
         ok: true,
         error: null,
-        token: null
+        token: null,
+        user: null
     }
 
     // email 에 해당하는 유저를 찾는다. 
@@ -51,6 +52,7 @@ export const UserLoginController = async (req: Request, res: Response) => {
             // 토큰 생성후 토큰 반환
             const token = generateJsonwebtoken(user.id)
             result.token = token
+            result.user = user
             res.json(result)
             return
         } else {
@@ -82,11 +84,13 @@ export const giveAuthorities = async (req: Request, res: Response) => {
     interface Iresult {
         ok: boolean
         error: string
+        user: IUser
     }
     const { email, password, authorities } = req.body as reqBody
     let result: Iresult = {
         ok: false,
-        error: null
+        error: null,
+        user: null
     }
     if (email && password) {
         try {
@@ -100,6 +104,7 @@ export const giveAuthorities = async (req: Request, res: Response) => {
                     user.authorities = authorities
                     await user.save()
                     result.ok = true
+                    result.user = user
                     return res.json(result)
                 } else {
                     result.error = "패스워드가 틀렸습니다."
