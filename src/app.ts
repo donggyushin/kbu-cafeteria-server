@@ -9,9 +9,9 @@ dotenv.config()
 
 let env = process.env.NODE_ENV || 'dev';
 
-const key = fs.readFileSync(__dirname + '/keys/privkey.pem', 'utf8')
-const cert = fs.readFileSync(__dirname + '/keys/cert.pem', 'utf8')
-const chain = fs.readFileSync(__dirname + '/keys/chain.pem', 'utf8')
+const key = fs.readFileSync('/etc/letsencrypt/live/kbucard.com/privkey.pem', 'utf8')
+const cert = fs.readFileSync('/etc/letsencrypt/live/kbucard.com/cert.pem', 'utf8')
+const chain = fs.readFileSync('/etc/letsencrypt/live/kbucard.com/chain.pem', 'utf8')
 
 const credentials = {
     key,
