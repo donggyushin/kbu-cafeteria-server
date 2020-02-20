@@ -23,7 +23,7 @@
     "typescript": "^3.7.4"
   },
   "scripts": {
-    "start": "NODE_ENV=production node dist/index.js > sudo stdout.txt 2> sudo stderr.text &",
+    "start": "NODE_ENV=production node dist/index.js > sudo stdout.txt &> sudo stderr.text &",
     "dev": "nodemon src/index.ts",
     "build": "tsc -p .",
     "docker": "NODE_ENV=docker node dist/index.js",
