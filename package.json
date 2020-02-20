@@ -24,7 +24,7 @@
     "typescript": "^3.7.4"
   },
   "scripts": {
-    "start": "NODE_ENV=production nohub node dist/index.js > output.log &",
+    "start": "NODE_ENV=production forever start dist/index.js",
     "dev": "nodemon src/index.ts",
     "build": "tsc -p .",
     "docker": "NODE_ENV=docker node dist/index.js",
