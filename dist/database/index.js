@@ -11,7 +11,7 @@ var env = process.env.NODE_ENV;
 if (env === 'docker') {
     endpoint = process.env.PROD_MONGODB_URL;
 }
-else if (env = 'production') {
+else if (env == 'production') {
     endpoint = process.env.PROD_MONGODB_URL;
 }
 mongoose_1.default.connect(endpoint, {

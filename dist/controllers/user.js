@@ -45,7 +45,7 @@ var aes256_1 = require("../utils/aes256");
 var jsonwebtoken_1 = require("../utils/jsonwebtoken");
 dotenv_1.default.config();
 exports.UserLoginController = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, email, password, result, user, decryptedPassword, token;
+    var _a, email, password, result, user, decryptedPassword, token, err_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -56,12 +56,15 @@ exports.UserLoginController = function (req, res) { return __awaiter(void 0, voi
                     token: null,
                     user: null
                 };
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 3, , 4]);
                 return [4 /*yield*/, user_1.default.findOne({
                         email: email
                     })
                     // 해당 user 가 존재하지 않는다면 error 
                 ];
-            case 1:
+            case 2:
                 user = _b.sent();
                 // 해당 user 가 존재하지 않는다면 error 
                 if (user === null) {
@@ -84,12 +87,71 @@ exports.UserLoginController = function (req, res) { return __awaiter(void 0, voi
                     res.json(result);
                     return [2 /*return*/];
                 }
+                return [3 /*break*/, 4];
+            case 3:
+                err_1 = _b.sent();
+                console.error(err_1);
+                result.error = "내부에러 발생";
+                return [2 /*return*/, res.json(result)];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+exports.giveAuthorities = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, email, password, authorities, result, user, userPassword, err_2;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = req.body, email = _a.email, password = _a.password, authorities = _a.authorities;
+                result = {
+                    ok: false,
+                    error: null,
+                    user: null
+                };
+                if (!(email && password)) return [3 /*break*/, 10];
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 8, , 9]);
+                return [4 /*yield*/, user_1.default.findOne({
+                        email: email
+                    })];
+            case 2:
+                user = _b.sent();
+                if (!user) return [3 /*break*/, 6];
+                userPassword = aes256_1.decryptText(user.password);
+                if (!(userPassword === password)) return [3 /*break*/, 4];
+                user.authorities = authorities;
+                return [4 /*yield*/, user.save()];
+            case 3:
+                _b.sent();
+                result.ok = true;
+                result.user = user;
+                return [2 /*return*/, res.json(result)];
+            case 4:
+                result.error = "패스워드가 틀렸습니다.";
+                return [2 /*return*/, res.json(result)];
+            case 5: return [3 /*break*/, 7];
+            case 6:
+                result.error = "해당하는 유저는 존재하지 않습니다.";
+                return [2 /*return*/, res.json(result)];
+            case 7: return [3 /*break*/, 9];
+            case 8:
+                err_2 = _b.sent();
+                console.log(err_2.message);
+                result.error = "서버 내부 에러 발생";
+                res.json(result);
                 return [2 /*return*/];
+            case 9: return [3 /*break*/, 11];
+            case 10:
+                result.error = "인자를 제대로 전달받지 못하였습니다.";
+                res.json(result);
+                return [2 /*return*/];
+            case 11: return [2 /*return*/];
         }
     });
 }); };
 exports.makeNewAccount = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, email, password, name, phone, result, existingUsers, existingUsersNumber, encryptedPassword, user, err_1;
+    var _a, email, password, name, phone, result, existingUsers, existingUsersNumber, encryptedPassword, user, err_3;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -130,9 +192,9 @@ exports.makeNewAccount = function (req, res) { return __awaiter(void 0, void 0, 
                 }
                 return [3 /*break*/, 4];
             case 3:
-                err_1 = _b.sent();
+                err_3 = _b.sent();
                 result.ok = false;
-                result.error = err_1.message,
+                result.error = err_3.message,
                     res.json(result);
                 return [2 /*return*/];
             case 4: return [2 /*return*/];

@@ -12,9 +12,19 @@ var http_1 = __importDefault(require("http"));
 var https_1 = __importDefault(require("https"));
 dotenv_1.default.config();
 var env = process.env.NODE_ENV || 'dev';
-var key = fs_1.default.readFileSync(__dirname + '/keys/privkey.pem', 'utf8');
-var cert = fs_1.default.readFileSync(__dirname + '/keys/cert.pem', 'utf8');
-var chain = fs_1.default.readFileSync(__dirname + '/keys/chain.pem', 'utf8');
+var key = "";
+var cert = "";
+var chain = "";
+if (env === 'docker') {
+    key = fs_1.default.readFileSync('/etc/letsencrypt/live/kbucard.com/privkey.pem', 'utf8');
+    cert = fs_1.default.readFileSync('/etc/letsencrypt/live/kbucard.com/cert.pem', 'utf8');
+    chain = fs_1.default.readFileSync('/etc/letsencrypt/live/kbucard.com/chain.pem', 'utf8');
+}
+else if (env === 'production') {
+    key = fs_1.default.readFileSync('/etc/letsencrypt/live/kbucard.com/privkey.pem', 'utf8');
+    cert = fs_1.default.readFileSync('/etc/letsencrypt/live/kbucard.com/cert.pem', 'utf8');
+    chain = fs_1.default.readFileSync('/etc/letsencrypt/live/kbucard.com/chain.pem', 'utf8');
+}
 var credentials = {
     key: key,
     cert: cert,
@@ -27,9 +37,12 @@ var PORT = process.env.PORT;
 app.use(cors_1.default());
 app.use(express_1.default.json());
 app.use('/api', apis_1.default);
-httpServer.listen(4001, function () { return console.log("kbu-cafeteria-server listening on port " + PORT); });
-// if (env === 'dev'){
-//     httpServer.listen(PORT, () => console.log(`kbu-cafeteria-server listening on port ${PORT}`))
-// }else {
-//     httpsServer.listen(PORT, () => console.log(`kbu-cafeteria-server listening on port ${PORT}`))
-// }
+if (env === 'dev') {
+    httpServer.listen(PORT, function () { return console.log("kbu-cafeteria-server listening on port " + PORT); });
+}
+else if (env === 'docker') {
+    httpsServer.listen(PORT, function () { return console.log("[HTTPS]kbu-cafeteria-server listening on port " + PORT); });
+}
+else if (env === 'production') {
+    httpsServer.listen(PORT, function () { return console.log("[HTTPS]kbu-cafeteria-server listening on port " + PORT); });
+}

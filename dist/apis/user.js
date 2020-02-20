@@ -8,4 +8,5 @@ var user_1 = require("../controllers/user");
 var router = express_1.default.Router();
 router.post('/new/account', user_1.makeNewAccount);
 router.post('/login', user_1.UserLoginController);
+router.post('/authorities', user_1.giveAuthorities);
 exports.default = router;
