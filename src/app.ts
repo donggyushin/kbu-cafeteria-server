@@ -19,7 +19,12 @@ if (env === 'docker') {
     key = fs.readFileSync('/etc/letsencrypt/live/kbucard.com/privkey.pem', 'utf8')
     cert = fs.readFileSync('/etc/letsencrypt/live/kbucard.com/cert.pem', 'utf8')
     chain = fs.readFileSync('/etc/letsencrypt/live/kbucard.com/chain.pem', 'utf8')
+} else if (env === 'production') {
+    key = fs.readFileSync('/etc/letsencrypt/live/kbucard.com/privkey.pem', 'utf8')
+    cert = fs.readFileSync('/etc/letsencrypt/live/kbucard.com/cert.pem', 'utf8')
+    chain = fs.readFileSync('/etc/letsencrypt/live/kbucard.com/chain.pem', 'utf8')
 }
+
 
 
 const credentials = {
@@ -42,5 +47,7 @@ if (env === 'dev') {
     httpServer.listen(PORT, () => console.log(`kbu-cafeteria-server listening on port ${PORT}`))
 
 } else if (env === 'docker') {
-    httpsServer.listen(PORT, () => console.log(`kbu-cafeteria-server listening on port ${PORT}`))
-}   
+    httpsServer.listen(PORT, () => console.log(`[HTTPS]kbu-cafeteria-server listening on port ${PORT}`))
+} else if (env === 'production') {
+    httpsServer.listen(PORT, () => console.log(`[HTTPS]kbu-cafeteria-server listening on port ${PORT}`))
+}
