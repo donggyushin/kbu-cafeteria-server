@@ -16,9 +16,9 @@ var key = "";
 var cert = "";
 var chain = "";
 if (env === 'docker') {
-    key = fs_1.default.readFileSync('/etc/letsencrypt/live/kbucard.com/privkey.pem', 'utf8');
-    cert = fs_1.default.readFileSync('/etc/letsencrypt/live/kbucard.com/cert.pem', 'utf8');
-    chain = fs_1.default.readFileSync('/etc/letsencrypt/live/kbucard.com/chain.pem', 'utf8');
+    key = fs_1.default.readFileSync('/usr/src/app/dist/keys/privkey.pem', 'utf8');
+    cert = fs_1.default.readFileSync('/usr/src/app/dist/keys/cert.pem', 'utf8');
+    chain = fs_1.default.readFileSync('/usr/src/app/dist/keys/chain.pem', 'utf8');
 }
 else if (env === 'production') {
     key = fs_1.default.readFileSync('/etc/letsencrypt/live/kbucard.com/privkey.pem', 'utf8');

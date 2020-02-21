@@ -16,9 +16,9 @@ let chain = "";
 
 if (env === 'docker') {
 
-    key = fs.readFileSync('/etc/letsencrypt/live/kbucard.com/privkey.pem', 'utf8')
-    cert = fs.readFileSync('/etc/letsencrypt/live/kbucard.com/cert.pem', 'utf8')
-    chain = fs.readFileSync('/etc/letsencrypt/live/kbucard.com/chain.pem', 'utf8')
+    key = fs.readFileSync('/usr/src/app/dist/keys/privkey.pem', 'utf8')
+    cert = fs.readFileSync('/usr/src/app/dist/keys/cert.pem', 'utf8')
+    chain = fs.readFileSync('/usr/src/app/dist/keys/chain.pem', 'utf8')
 } else if (env === 'production') {
     key = fs.readFileSync('/etc/letsencrypt/live/kbucard.com/privkey.pem', 'utf8')
     cert = fs.readFileSync('/etc/letsencrypt/live/kbucard.com/cert.pem', 'utf8')
