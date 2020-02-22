@@ -1,6 +1,7 @@
 import express from 'express'
 import { checkUserAuth, checkPrayer } from '../middlewares/authorization'
-import { postTodayPray, getTodayPray, getTodayPrayById, getTodayPrays, postTodayPraySpecificDate } from '../controllers/todayPray'
+import { getTodayPray } from '../controllers/todayPray/getTodayPray'
+import { postTodayPray, getTodayPrayById, getTodayPrays, postTodayPraySpecificDate } from '../controllers/todayPray'
 const router = express.Router()
 
 router.get('/pray/:id', getTodayPrayById)
