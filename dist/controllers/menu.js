@@ -80,7 +80,7 @@ exports.getSpecificOneMenuBasedOnDate = function (req, res) { return __awaiter(v
                     menus: []
                 };
                 fix = {
-                    menus: ['돈까스', '비빔밥']
+                    menus: []
                 };
                 daily = {
                     menus: []
@@ -168,7 +168,7 @@ exports.getMenusBasedOnSpecificDate = function (req, res) { return __awaiter(voi
                     menus: []
                 };
                 fix = {
-                    menus: ['돈까스', '비빔밥']
+                    menus: []
                 };
                 daily = {
                     menus: []
@@ -306,7 +306,7 @@ exports.GetMenusOnAMonthly = function (req, res) { return __awaiter(void 0, void
                     menus: []
                 };
                 fix = {
-                    menus: ['돈까스', '비빔밥']
+                    menus: []
                 };
                 daily = {
                     menus: []

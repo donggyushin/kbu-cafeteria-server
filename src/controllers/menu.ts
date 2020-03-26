@@ -51,7 +51,7 @@ export const getSpecificOneMenuBasedOnDate = async (req: Request, res: Response)
             }
 
             const fix = {
-                menus: ['돈까스', '비빔밥']
+                menus: []
             }
 
             const daily = {
@@ -156,7 +156,7 @@ export const getMenusBasedOnSpecificDate = async (req: Request, res: Response) =
                     }
 
                     const fix = {
-                        menus: ['돈까스', '비빔밥']
+                        menus: []
                     }
 
                     const daily = {
@@ -307,7 +307,7 @@ export const GetMenusOnAMonthly = async (req: Request, res: Response): Promise<v
                 }
 
                 const fix = {
-                    menus: ['돈까스', '비빔밥']
+                    menus: []
                 }
 
                 const daily = {
