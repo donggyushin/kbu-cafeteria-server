@@ -22,9 +22,13 @@ const menuSchema = new Schema({
     month: Number,
     day: Number,
     lunch: lunchSchema,
+    lunchPrice: Number,
     dinner: dinnerSchema,
+    dinnerPrice: Number,
     daily: dailyMenuSchema,
-    fix: fixMenuSchema
+    dailyPrices: [Number],
+    fix: fixMenuSchema,
+    fixPrices: [Number]
 })
 
 const MenuModel = mongoose.model<IMenu>('menu', menuSchema)

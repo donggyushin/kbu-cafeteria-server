@@ -25,9 +25,13 @@ var menuSchema = new mongoose_1.Schema({
     month: Number,
     day: Number,
     lunch: lunchSchema,
+    lunchPrice: Number,
     dinner: dinnerSchema,
+    dinnerPrice: Number,
     daily: dailyMenuSchema,
-    fix: fixMenuSchema
+    dailyPrices: [Number],
+    fix: fixMenuSchema,
+    fixPrices: [Number]
 });
 var MenuModel = mongoose_1.default.model('menu', menuSchema);
 exports.default = MenuModel;

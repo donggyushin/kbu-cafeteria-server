@@ -50,9 +50,13 @@ export interface IMenu extends mongoose.Document {
     month: number
     day: number
     lunch: ILunch
+    lunchPrice: number
     dinner: IDinner
+    dinnerPrice: number
     fix: IFixMenu
+    fixPrices: number[]
     daily: IDailyMenu
+    dailyPrices: number[]
 }
 
 // 유저

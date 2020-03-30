@@ -43,7 +43,7 @@ var menu_1 = __importDefault(require("../models/menu"));
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 exports.getSpecificOneMenuBasedOnDate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var date, result, parsedDate, year, month, day, menu, dinner, lunch, fix, daily, newMenu, err_1, err_2;
+    var date, result, parsedDate, year, month, day, menu, dinner, dinnerPrice, lunch, lunchPrice, fix, fixPrices, daily, dailyPrices, newMenu, err_1, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -76,15 +76,19 @@ exports.getSpecificOneMenuBasedOnDate = function (req, res) { return __awaiter(v
                 dinner = {
                     menus: []
                 };
+                dinnerPrice = 0;
                 lunch = {
                     menus: []
                 };
+                lunchPrice = 0;
                 fix = {
                     menus: []
                 };
+                fixPrices = [];
                 daily = {
                     menus: []
                 };
+                dailyPrices = [];
                 _a.label = 4;
             case 4:
                 _a.trys.push([4, 6, , 7]);
@@ -95,7 +99,11 @@ exports.getSpecificOneMenuBasedOnDate = function (req, res) { return __awaiter(v
                         dinner: dinner,
                         lunch: lunch,
                         fix: fix,
-                        daily: daily
+                        daily: daily,
+                        dinnerPrice: dinnerPrice,
+                        lunchPrice: lunchPrice,
+                        fixPrices: fixPrices,
+                        dailyPrices: dailyPrices
                     })];
             case 5:
                 newMenu = _a.sent();
@@ -121,7 +129,7 @@ exports.getSpecificOneMenuBasedOnDate = function (req, res) { return __awaiter(v
     });
 }); };
 exports.getMenusBasedOnSpecificDate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, date2, date1, result, menusList, diff, parsedDate1, days, startYear, startMonth, startDay, numberOfDaysOfTheStartMonth, year, month, day, i, menu, dinner, lunch, fix, daily, newMenu, err_3;
+    var _a, date2, date1, result, menusList, diff, parsedDate1, days, startYear, startMonth, startDay, numberOfDaysOfTheStartMonth, year, month, day, i, menu, dinner, dinnerPrice, lunch, lunchPrice, fix, fixPrices, daily, dailyPrices, newMenu, err_3;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -164,15 +172,19 @@ exports.getMenusBasedOnSpecificDate = function (req, res) { return __awaiter(voi
                 dinner = {
                     menus: []
                 };
+                dinnerPrice = 0;
                 lunch = {
                     menus: []
                 };
+                lunchPrice = 0;
                 fix = {
                     menus: []
                 };
+                fixPrices = [];
                 daily = {
                     menus: []
                 };
+                dailyPrices = [];
                 return [4 /*yield*/, new menu_1.default({
                         year: year,
                         month: month,
@@ -180,7 +192,11 @@ exports.getMenusBasedOnSpecificDate = function (req, res) { return __awaiter(voi
                         dinner: dinner,
                         lunch: lunch,
                         fix: fix,
-                        daily: daily
+                        daily: daily,
+                        dinnerPrice: dinnerPrice,
+                        lunchPrice: lunchPrice,
+                        dailyPrices: dailyPrices,
+                        fixPrices: fixPrices
                     })];
             case 5:
                 newMenu = _b.sent();
@@ -249,6 +265,10 @@ exports.PutNewMenu = function (req, res) { return __awaiter(void 0, void 0, void
                 menu.dinner.menus = newMenu.dinner.menus;
                 menu.fix.menus = newMenu.fix.menus;
                 menu.daily.menus = newMenu.daily.menus;
+                menu.lunchPrice = newMenu.lunchPrice;
+                menu.dinnerPrice = newMenu.dinnerPrice;
+                menu.fixPrices = newMenu.fixPrices;
+                menu.dailyPrices = newMenu.dailyPrices;
                 return [4 /*yield*/, menu.save()];
             case 3:
                 _a.sent();
@@ -267,7 +287,7 @@ exports.PutNewMenu = function (req, res) { return __awaiter(void 0, void 0, void
     });
 }); };
 exports.GetMenusOnAMonthly = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var result, _a, year, month, parsedYear, parsedMonth, menuObjects, days, index, menu, dinner, lunch, fix, daily, newMenu, err_5;
+    var result, _a, year, month, parsedYear, parsedMonth, menuObjects, days, index, menu, dinner, dinnerPrice, lunch, lunchPrice, fix, fixPrices, daily, dailyPrices, newMenu, err_5;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -302,15 +322,19 @@ exports.GetMenusOnAMonthly = function (req, res) { return __awaiter(void 0, void
                 dinner = {
                     menus: []
                 };
+                dinnerPrice = 0;
                 lunch = {
                     menus: []
                 };
+                lunchPrice = 0;
                 fix = {
                     menus: []
                 };
+                fixPrices = [];
                 daily = {
                     menus: []
                 };
+                dailyPrices = [];
                 return [4 /*yield*/, new menu_1.default({
                         year: year,
                         month: month,
@@ -318,7 +342,11 @@ exports.GetMenusOnAMonthly = function (req, res) { return __awaiter(void 0, void
                         dinner: dinner,
                         lunch: lunch,
                         fix: fix,
-                        daily: daily
+                        daily: daily,
+                        dinnerPrice: dinnerPrice,
+                        lunchPrice: lunchPrice,
+                        fixPrices: fixPrices,
+                        dailyPrices: dailyPrices
                     })];
             case 5:
                 newMenu = _b.sent();

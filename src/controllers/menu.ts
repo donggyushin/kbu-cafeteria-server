@@ -46,17 +46,28 @@ export const getSpecificOneMenuBasedOnDate = async (req: Request, res: Response)
             const dinner = {
                 menus: []
             }
+
+            const dinnerPrice = 0
+
             const lunch = {
                 menus: []
             }
+            const lunchPrice = 0
 
             const fix = {
                 menus: []
             }
 
+            const fixPrices = []
+
             const daily = {
                 menus: []
             }
+
+            const dailyPrices = []
+
+
+
 
             try {
                 const newMenu = await new MenuModel({
@@ -66,7 +77,11 @@ export const getSpecificOneMenuBasedOnDate = async (req: Request, res: Response)
                     dinner,
                     lunch,
                     fix,
-                    daily
+                    daily,
+                    dinnerPrice,
+                    lunchPrice,
+                    fixPrices,
+                    dailyPrices
                 })
 
                 result.ok = true
@@ -151,17 +166,22 @@ export const getMenusBasedOnSpecificDate = async (req: Request, res: Response) =
                     const dinner = {
                         menus: []
                     }
+                    const dinnerPrice = 0
                     const lunch = {
                         menus: []
                     }
+                    const lunchPrice = 0
 
                     const fix = {
                         menus: []
                     }
+                    const fixPrices = []
 
                     const daily = {
                         menus: []
                     }
+
+                    const dailyPrices = []
 
                     const newMenu: IMenu = await new MenuModel({
                         year,
@@ -170,7 +190,11 @@ export const getMenusBasedOnSpecificDate = async (req: Request, res: Response) =
                         dinner,
                         lunch,
                         fix,
-                        daily
+                        daily,
+                        dinnerPrice,
+                        lunchPrice,
+                        dailyPrices,
+                        fixPrices
                     })
                     await newMenu.save()
                     menusList.push(newMenu)
@@ -239,7 +263,10 @@ export const PutNewMenu = async (req: Request, res: Response) => {
         menu.dinner.menus = newMenu.dinner.menus
         menu.fix.menus = newMenu.fix.menus
         menu.daily.menus = newMenu.daily.menus
-
+        menu.lunchPrice = newMenu.lunchPrice
+        menu.dinnerPrice = newMenu.dinnerPrice
+        menu.fixPrices = newMenu.fixPrices
+        menu.dailyPrices = newMenu.dailyPrices
         await menu.save()
 
         result.menu = menu
@@ -302,17 +329,26 @@ export const GetMenusOnAMonthly = async (req: Request, res: Response): Promise<v
                 const dinner = {
                     menus: []
                 }
+
+                const dinnerPrice = 0
+
                 const lunch = {
                     menus: []
                 }
+
+                const lunchPrice = 0
 
                 const fix = {
                     menus: []
                 }
 
+                const fixPrices = []
+
                 const daily = {
                     menus: []
                 }
+
+                const dailyPrices = []
 
                 const newMenu = await new MenuModel({
                     year,
@@ -321,7 +357,11 @@ export const GetMenusOnAMonthly = async (req: Request, res: Response): Promise<v
                     dinner,
                     lunch,
                     fix,
-                    daily
+                    daily,
+                    dinnerPrice,
+                    lunchPrice,
+                    fixPrices,
+                    dailyPrices
                 })
 
                 await newMenu.save()
